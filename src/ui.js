@@ -4,6 +4,8 @@ const figlet = require('figlet');
 const fs = require('fs-extra');
 const path = require('path');
 
+const stripAnsi = (str) => str.replace(/\x1B\[[0-9;]*m/g, '');
+
 class UI {
   constructor() {
     this.progressBar = new cliProgress.SingleBar({
@@ -15,7 +17,7 @@ class UI {
       processed: 0,
       errors: 0
     });
-    
+
     this.errors = [];
     this.stats = {
       total: 0,
@@ -42,26 +44,25 @@ class UI {
   }
 
   startProgress(total) {
-    this.stats.total = total;
+    this.stats.total += total;
     this.progressBar.start(total, 0, { processed: 0, errors: 0 });
   }
 
   updateProgress(processedCount, errorCount) {
-    this.progressBar.update(processedCount, { 
-      processed: processedCount - errorCount, 
-      errors: errorCount 
+    this.progressBar.update(processedCount, {
+      processed: processedCount - errorCount,
+      errors: errorCount
     });
   }
 
   stopProgress() {
     this.progressBar.stop();
-    console.log('\n');
+    console.log('');
   }
 
   logError(file, message) {
     this.errors.push({ file, message });
     this.stats.errors++;
-    // Вывод ошибки сразу в консоль
     console.log(`\n${chalk.red('✖ ERROR:')} ${path.basename(file)}`);
     console.log(`  ${chalk.gray(message)}`);
   }
@@ -72,24 +73,39 @@ class UI {
 
   showFinalReport(duration, outputPath) {
     console.log(chalk.bold('\n📊 Final Report:\n'));
-    
-    const tableData = [
-      { metric: 'Total Scanned', value: this.stats.total },
-      { metric: 'Successfully Processed', value: chalk.green(this.stats.processed) },
-      { metric: 'Horizontal (H)', value: chalk.blue(this.stats.horizontal) },
-      { metric: 'Vertical (V)', value: chalk.magenta(this.stats.vertical) },
-      { metric: 'Skipped (Size)', value: chalk.yellow(this.stats.skipped) },
-      { metric: 'Errors', value: this.stats.errors > 0 ? chalk.red(this.stats.errors) : 0 },
-      { metric: 'Time Elapsed', value: `${(duration / 1000).toFixed(2)}s` }
+
+    const rows = [
+      ['Total Scanned',          String(this.stats.total)],
+      ['Successfully Processed', chalk.green(String(this.stats.processed))],
+      ['Horizontal (H)',         chalk.blue(String(this.stats.horizontal))],
+      ['Vertical (V)',           chalk.magenta(String(this.stats.vertical))],
+      ['Skipped (Size)',         chalk.yellow(String(this.stats.skipped))],
+      ['Errors',                 this.stats.errors > 0 ? chalk.red(String(this.stats.errors)) : '0'],
+      ['Time Elapsed',           `${(duration / 1000).toFixed(2)}s`],
     ];
 
-    console.table(tableData);
+    const col1Width = Math.max(...rows.map(r => r[0].length));
+    const col2Width = Math.max(...rows.map(r => stripAnsi(r[1]).length));
+
+    const hr  = (l, m, r, fill) => `${l}${fill.repeat(col1Width + 2)}${m}${fill.repeat(col2Width + 2)}${r}`;
+    const row = (label, value) => {
+      const padded = value + ' '.repeat(col2Width - stripAnsi(value).length);
+      return `│ ${label.padEnd(col1Width)} │ ${padded} │`;
+    };
+
+    console.log(hr('┌', '┬', '┐', '─'));
+    console.log(row(chalk.bold('Metric'), chalk.bold('Value')));
+    rows.forEach(r => {
+      console.log(hr('├', '┼', '┤', '─'));
+      console.log(row(r[0], r[1]));
+    });
+    console.log(hr('└', '┴', '┘', '─'));
 
     if (this.errors.length > 0) {
       console.log(chalk.red.bold('\n⚠ Errors Log:\n'));
       const errorLogPath = path.join(outputPath, 'error_log.txt');
       let logContent = 'ERROR LOG\n===========\n\n';
-      
+
       this.errors.forEach((err, i) => {
         console.log(`${i + 1}. ${chalk.red(err.file)}`);
         console.log(`   ${chalk.gray(err.message)}\n`);
@@ -103,7 +119,7 @@ class UI {
         console.log(chalk.gray('Could not save error log file.\n'));
       }
     } else {
-      console.log(chalk.green('✅ All files processed successfully!\n'));
+      console.log(chalk.green('\n✅ All files processed successfully!\n'));
     }
   }
 }

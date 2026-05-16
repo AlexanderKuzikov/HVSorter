@@ -21,12 +21,16 @@ class Config {
 
     this.validate();
     this.normalizePaths();
-    
+
     return this.config;
   }
 
   validate() {
-    const required = ['sourcePath', 'output', 'filters', 'resize'];
+    // Поддержка sourcePaths (массив) и legacy sourcePath (строка)
+    if (!this.config.sourcePaths && !this.config.sourcePath) {
+      throw new Error('Missing required config key: sourcePaths (array) or sourcePath (string)');
+    }
+    const required = ['output', 'filters', 'resize'];
     required.forEach(key => {
       if (!this.config[key]) {
         throw new Error(`Missing required config key: ${key}`);
@@ -35,21 +39,26 @@ class Config {
   }
 
   normalizePaths() {
-    // Нормализация пути источника
-    this.config.sourcePath = path.resolve(this.config.sourcePath);
-    
-    // Проверка существования исходной папки
-    if (!fs.existsSync(this.config.sourcePath)) {
-      throw new Error(`Source path does not exist: ${this.config.sourcePath}`);
+    // Нормализуем в единый массив sourcePaths
+    if (this.config.sourcePath && !this.config.sourcePaths) {
+      this.config.sourcePaths = [this.config.sourcePath];
     }
+    this.config.sourcePaths = this.config.sourcePaths.map(p => {
+      const resolved = path.resolve(p);
+      if (!fs.existsSync(resolved)) {
+        throw new Error(`Source path does not exist: ${resolved}`);
+      }
+      return resolved;
+    });
+    // Для обратной совместимости
+    this.config.sourcePath = this.config.sourcePaths[0];
   }
 
-  getOutputPath(orientation) {
-    const folderName = orientation === 'horizontal' 
-      ? this.config.output.folders.horizontal 
+  getOutputPath(basePath, orientation) {
+    const folderName = orientation === 'horizontal'
+      ? this.config.output.folders.horizontal
       : this.config.output.folders.vertical;
-    
-    return path.join(this.config.sourcePath, folderName);
+    return path.join(basePath, folderName);
   }
 }
 

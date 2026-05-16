@@ -1,5 +1,7 @@
 {
-  "sourcePath": "E:/Images/Frances",
+  "sourcePaths": [
+    "E:/Images/Frances"
+  ],
   "output": {
     "format": "webp",
     "quality": 75,
