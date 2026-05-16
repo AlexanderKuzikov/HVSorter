@@ -9,14 +9,18 @@ const stripAnsi = (str) => str.replace(/\x1B\[[0-9;]*m/g, '');
 class UI {
   constructor() {
     this.progressBar = new cliProgress.SingleBar({
-      format: `${chalk.cyan('{bar}')} | {percentage}% | {value}/{total} | ${chalk.green('OK:')} {processed} | ${chalk.red('Err:')} {errors}`,
+      format:
+        `${chalk.cyan('{bar}')} | {percentage}% | {value}/{total}` +
+        ` | ${chalk.green('OK:')} {processed}` +
+        ` | ${chalk.red('Err:')} {errors}` +
+        ` | ${chalk.gray('⏱')} {duration_formatted}` +
+        ` | ${chalk.yellow('ETA:')} {eta_formatted}`,
       barCompleteChar: '\u2588',
       barIncompleteChar: '\u2591',
-      hideCursor: true
-    }, {
-      processed: 0,
-      errors: 0
-    });
+      hideCursor: true,
+      etaBuffer: 50,
+      fps: 5
+    }, cliProgress.Presets.shades_classic);
 
     this.errors = [];
     this.stats = {
@@ -32,15 +36,15 @@ class UI {
   showBanner() {
     console.clear();
     try {
-      const banner = figlet.textSync('Image Processor', {
+      const banner = figlet.textSync('HVSorter', {
         font: 'Standard',
         horizontalLayout: 'default'
       });
       console.log(chalk.cyan.bold(banner));
     } catch (e) {
-      console.log(chalk.cyan.bold('IMAGE PROCESSOR CLI'));
+      console.log(chalk.cyan.bold('HVSORTER CLI'));
     }
-    console.log(chalk.gray('Node.js Utility for Image Processing\n'));
+    console.log(chalk.gray('Node.js Utility for Image Sorting & Processing\n'));
   }
 
   startProgress(total) {

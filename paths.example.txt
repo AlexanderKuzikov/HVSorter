@@ -1,0 +1,11 @@
+# HVSorter — source directories
+# One path per line. All slash styles are supported.
+# Lines starting with # and empty lines are ignored.
+#
+# Examples:
+# E:/Images/Set1
+# E:\Images\Set2
+# E:\\Images\\Set3
+# /mnt/data/photos
+
+E:/Images/Frances
