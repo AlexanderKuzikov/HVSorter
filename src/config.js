@@ -64,9 +64,25 @@ class Config {
     this.config.sourcePath  = this.config.sourcePaths[0];
   }
 
+  _sanitize(raw) {
+    return raw
+      // Убираем BOM и невидимые символы
+      .replace(/^\uFEFF/, '')
+      .replace(/[\u200B-\u200D\uFEFF\u00A0]/g, '')
+      // Все варианты кавычек: " ' ` « » „ " " ' ' ‚ ‹ › 「」
+      .replace(/["""„«»\u201A\u2018\u2019\u201B\u2039\u203A\u300C\u300D`']/g, '')
+      // Случайные знаки препинания в начале/конце: , ; : | > запятые и пр.
+      .replace(/^[,;:|>\s]+/, '')
+      .replace(/[,;:|>\s]+$/, '')
+      // Двойные слэши → одинарные (кроме \\Server UNC-путей)
+      .replace(/(?<!^)\\{2,}/g, '\\')
+      .trim();
+  }
+
   _normalizePath(rawPath) {
-    // Нормализуем любые варианты слэшей: \, /, \\
-    const normalized = path.resolve(rawPath.replace(/\\\\/g, '\\'));
+    const clean = this._sanitize(rawPath);
+    // path.resolve корректно обрабатывает и / и \ на любой платформе
+    const normalized = path.resolve(clean);
     if (!fs.existsSync(normalized)) {
       throw new Error(`Source path does not exist: ${normalized}`);
     }
