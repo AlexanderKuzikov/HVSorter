@@ -1,11 +1,23 @@
 # HVSorter — source directories
-# One path per line. All slash styles are supported.
-# Lines starting with # and empty lines are ignored.
+# Copy this file to paths.txt and fill in your paths.
+# One path per line. Empty lines and lines starting with # are ignored.
+# All slash styles are supported, quotes and stray punctuation are stripped automatically.
 #
 # Examples:
 # E:/Images/Set1
 # E:\Images\Set2
-# E:\\Images\\Set3
-# /mnt/data/photos
+# "E:\Images\Set3"
+# E:\\Images\\Set4
+# /mnt/nas/photos
 
-E:/Images/Frances
+E:/Images/Eleonora
+E:/Images/Darisha
+E:/Images/Cosmo
+E:/Images/Corinna
+E:/Images/Christina
+E:/Images/Carisha
+E:/Images/Avery
+E:/Images/Aveira
+E:/Images/Aurmi
+E:/Images/Astrud
+E:/Images/Ardelia
