@@ -1,0 +1,24 @@
+{
+  "name": "image-processor-cli",
+  "version": "1.0.0",
+  "description": "CLI utility for processing images with sharp",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cli-progress": "^3.12.0",
+    "figlet": "^1.6.0",
+    "fs-extra": "^11.1.1",
+    "sharp": "^0.32.6"
+  },
+  "keywords": [
+    "image",
+    "processing",
+    "cli",
+    "sharp"
+  ],
+  "author": "",
+  "license": "ISC"
+}

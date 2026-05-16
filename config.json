@@ -1,0 +1,29 @@
+{
+  "sourcePath": "E:/Images/Frances",
+  "output": {
+    "format": "webp",
+    "quality": 75,
+    "folders": {
+      "horizontal": "H",
+      "vertical": "V"
+    }
+  },
+  "filters": {
+    "minHeight": 1080,
+    "minWidth": 1200
+  },
+  "resize": {
+    "horizontal": {
+      "width": 1920,
+      "height": 1200
+    },
+    "vertical": {
+      "width": 1200,
+      "height": 1920
+    }
+  },
+  "options": {
+    "clearOutputFolders": true,
+    "squaresToBoth": true
+  }
+}
