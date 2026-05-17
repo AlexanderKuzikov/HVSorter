@@ -10,14 +10,8 @@
 # E:\\Images\\Set4
 # /mnt/nas/photos
 
-E:/Images/Eleonora
-E:/Images/Darisha
-E:/Images/Cosmo
-E:/Images/Corinna
-E:/Images/Christina
-E:/Images/Carisha
-E:/Images/Avery
-E:/Images/Aveira
-E:/Images/Aurmi
-E:/Images/Astrud
-E:/Images/Ardelia
+E:\Images\Anneth
+E:\Images\Alysha
+E:\Images\Alicia Mone
+E:\Images\Alex
+E:\Images\Adriana Fawn
