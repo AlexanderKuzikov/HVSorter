@@ -190,21 +190,21 @@ Directories to process: 2
 📊 Final Report:
 
 ┌──────────────────────────┬─────────┐
-│ Metric                   │ Value     │
+│ Metric                   │ Value   │
 ├──────────────────────────┼─────────┤
-│ Total Scanned            │ 2629      │
+│ Total Scanned            │ 2629    │
 ├──────────────────────────┼─────────┤
-│ Successfully Processed   │ 2593      │
+│ Successfully Processed   │ 2593    │
 ├──────────────────────────┼─────────┤
-│ Horizontal (H)           │ 880       │
+│ Horizontal (H)           │ 880     │
 ├──────────────────────────┼─────────┤
-│ Vertical (V)             │ 1713      │
+│ Vertical (V)             │ 1713    │
 ├──────────────────────────┼─────────┤
-│ Skipped (Size)           │ 36        │
+│ Skipped (Size)           │ 36      │
 ├──────────────────────────┼─────────┤
-│ Errors                   │ 0         │
+│ Errors                   │ 0       │
 ├──────────────────────────┼─────────┤
-│ Time Elapsed             │ 669.82s   │
+│ Time Elapsed             │ 669.82s │
 └──────────────────────────┴─────────┘
 
 ✅ All files processed successfully!
