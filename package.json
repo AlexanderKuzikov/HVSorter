@@ -20,5 +20,8 @@
     "sharp"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "allowScripts": {
+    "sharp@0.32.6": true
+  }
 }
